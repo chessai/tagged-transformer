@@ -70,7 +70,7 @@ import Data.Traversable (Traversable(..))
 import Data.Typeable
 import Data.Foldable (Foldable(..))
 import Data.Distributive (Distributive(..))
-import Data.Functor.Bind (Apply(..), Bind(..))
+import Data.Functor.Semimonad (Semiapplicative(..), Semimonad(..))
 import Data.Functor.Extend (Extend(..))
 import Data.Functor.Plus (Alt(..), Plus(..))
 import Data.Functor.Contravariant (Contravariant(..))
@@ -165,7 +165,7 @@ instance Contravariant m => Contravariant (TaggedT s m) where
   contramap f (TagT x) = TagT (contramap f x)
   {-# INLINE contramap #-}
 
-instance Apply m => Apply (TaggedT s m) where
+instance Semiapplicative m => Semiapplicative (TaggedT s m) where
   TagT f <.> TagT x = TagT (f <.> x)
   {-# INLINE (<.>) #-}
   TagT f  .> TagT x = TagT (f  .> x)
@@ -183,7 +183,7 @@ instance Applicative m => Applicative (TaggedT s m) where
   TagT f <*  TagT x = TagT (f <*  x)
   {-# INLINE (<* ) #-}
 
-instance Bind m => Bind (TaggedT s m) where
+instance Semimonad m => Semimonad (TaggedT s m) where
   TagT m >>- k = TagT (m >>- untagT . k)
   {-# INLINE (>>-) #-}
 
